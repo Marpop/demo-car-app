@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from demo_car_app.users.models import User
+from apps.users.models import User
 
 pytestmark = pytest.mark.django_db
 

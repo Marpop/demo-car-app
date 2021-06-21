@@ -266,7 +266,7 @@ tags
 
 ### Project template
 
-demo_car_app/media/
+apps/media/
 
 .pytest_cache/
 

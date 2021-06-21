@@ -24,8 +24,8 @@ if __name__ == "__main__":
         raise
 
     # This allows easy placement of apps within the interior
-    # demo_car_app directory.
+    # apps directory.
     current_path = Path(__file__).parent.resolve()
-    sys.path.append(str(current_path / "demo_car_app"))
+    sys.path.append(str(current_path / "apps"))
 
     execute_from_command_line(sys.argv)

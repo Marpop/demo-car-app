@@ -40,7 +40,7 @@ Running type checks with mypy:
 
 ::
 
-  $ mypy demo_car_app
+  $ mypy apps
 
 Test coverage
 ^^^^^^^^^^^^^
