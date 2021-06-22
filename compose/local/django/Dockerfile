@@ -1,8 +1,12 @@
 FROM python:3.9
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV \
+  # This prevents Python from writing out pyc files \
+  PYTHONDONTWRITEBYTECODE=1 \
+  # This keeps Python from buffering stdin/stdout \
+  PYTHONUNBUFFERED=1
 
+# Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt
 

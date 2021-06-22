@@ -14,7 +14,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - .:/app
+      - .:/code
     env_file:
       - ./.envs/.local/.django
       - ./.envs/.local/.postgres
