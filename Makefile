@@ -89,10 +89,6 @@ coverage_open: ## Generate and open html coverage report
 .PHONY: test
 test:  test_mypy test_pytest ## Run pytest and mypy
 
-.PHONY: test_pytest_dev
-test_pytest_dev: ## Run pytest-watch
-	$(RUN_DJANGO) pytest-watch
-
 .PHONY: format_imports
 format_imports: ## Format Python imports with isort
 	$(RUN_DJANGO) isort .
@@ -109,15 +105,8 @@ lint: ## Lint Python code with flake8 and pylint
 	$(RUN_DJANGO) flake8
 	$(RUN_DJANGO) pylint config/ apps/
 
-.PHONY: safe
-safe: ## Scan for security issues
-	$(RUN_DJANGO) safety check
-
 .PHONY: all
-all: test safe format lint ## Run all testing, formating and linting tools
-
-.PHONY: all_no_pytest
-all_no_pytest: test_mypy safe format lint ## Run all testing formating and linting tools (except pytest)
+all: test format lint ## Run all testing, formating and linting tools
 
 .PHONY: remove_coverage_data
 remove_coverage_data: ## Remove Django test coverage data
