@@ -13,7 +13,6 @@ class Car(TimeStampedModel):
         return f"{self.maker} {self.model}"
 
 
-
 class Rate(TimeStampedModel):
     car = models.ForeignKey(Car, related_name="rates", on_delete=models.CASCADE)
     rate = models.PositiveSmallIntegerField(
