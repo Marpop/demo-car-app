@@ -142,7 +142,10 @@ sentry_logging = LoggingIntegration(
     level=SENTRY_LOG_LEVEL,  # Capture info and above as breadcrumbs
     event_level=logging.ERROR,  # Send errors as events
 )
-integrations = [sentry_logging, DjangoIntegration(), ]
+integrations = [
+    sentry_logging,
+    DjangoIntegration(),
+]
 sentry_sdk.init(
     dsn=SENTRY_DSN,
     integrations=integrations,
