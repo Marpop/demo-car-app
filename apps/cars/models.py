@@ -17,6 +17,10 @@ class Car(TimeStampedModel):
     def __str__(self):
         return f"{self.maker} {self.model}"
 
+    @property
+    def avg_rating(self):
+        return self.rates.all().aggregate(Avg("rate")).get("rate__avg")
+
 
 class Rate(TimeStampedModel):
     car = models.ForeignKey(Car, related_name="rates", on_delete=models.CASCADE)
