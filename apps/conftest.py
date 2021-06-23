@@ -1,5 +1,12 @@
 import pytest
+from pytest_factoryboy import register
 
-@pytest.fixture(autouse=True)
-def media_storage(settings, tmpdir):
-    settings.MEDIA_ROOT = tmpdir.strpath
+from content.tests.factories import CarFactory, RateFactory
+from rest_framework.test import APIClient
+
+register(CarFactory)
+register(RateFactory)
+
+@pytest.fixture
+def api_client():
+    return APIClient()
