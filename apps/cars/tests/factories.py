@@ -4,7 +4,7 @@ from apps.cars.models import Car, Rate
 
 
 class CarFactory(factory.django.DjangoModelFactory):
-    maker = factory.Faker("word")
+    make = factory.Faker("word")
     model = factory.Faker("word")
 
     class Meta:

@@ -6,7 +6,7 @@ import pytest
 from rest_framework import status
 
 from apps.cars.models import Car
-from apps.cars.tests.factories import CarFactory
+from apps.cars.tests.factories import CarFactory, RateFactory
 
 pytestmark = pytest.mark.django_db
 
@@ -15,7 +15,7 @@ class TestCarListView:
     @staticmethod
     def setup():
         CarFactory.create_batch(4)
-        CarFactory.create(maker="Volkswagen", model="Passat")
+        CarFactory.create(make="Volkswagen", model="Passat")
 
     @staticmethod
     def test_list(api_client):
@@ -27,13 +27,13 @@ class TestCarListView:
     def test_create_ok(api_client):
         response = api_client.post(
             reverse("cars"),
-            data={"maker": "Volkswagen", "model": "Golf"},
+            data={"make": "Volkswagen", "model": "Golf"},
             format="json",
         )
         assert response.status_code == status.HTTP_201_CREATED
         assert response.json() == {
             "id": ANY,
-            "maker": "Volkswagen",
+            "make": "Volkswagen",
             "model": "Golf",
             "avg_rating": None,
         }
@@ -43,7 +43,7 @@ class TestCarListView:
     def test_create_exists(api_client):
         response = api_client.post(
             reverse("cars"),
-            data={"maker": "Volkswagen", "model": "Passat"},
+            data={"make": "Volkswagen", "model": "Passat"},
             format="json",
         )
         assert response.status_code == status.HTTP_400_BAD_REQUEST
@@ -62,6 +62,26 @@ class TestCarDestroyView:
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert Car.objects.all().count() == 3
 
+class TestPopularCarsListView:
+    @staticmethod
+    def setup():
+        car_1 = CarFactory.create(make="BMW")
+        car_2 = CarFactory.create(make="Mercedes")
+        CarFactory.create(make="Volkswagen")
+        RateFactory(car=car_1)
+        RateFactory(car=car_1)
+        RateFactory(car=car_1)
+        RateFactory(car=car_2)
+        RateFactory(car=car_2)
+        RateFactory(car=car_2)
+        RateFactory(car=car_2)
+        RateFactory(car=car_2)
+
+    @staticmethod
+    def test_list(api_client):
+        response = api_client.get(reverse("popular"))
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == [{"id":ANY,"make": "Mercedes","model":ANY,"rates_number":5,},{"id": ANY,"make": "BMW","model": ANY,"rates_number": 3,},{"id": ANY,"make": "Volkswagen","model": ANY,"rates_number":0}]
 
 class TestRateCarView:
     @staticmethod

@@ -12,7 +12,7 @@ class CarSerializer(serializers.ModelSerializer):
         model = Car
         fields = (
             "id",
-            "maker",
+            "make",
             "model",
             "avg_rating",
         )
@@ -20,9 +20,27 @@ class CarSerializer(serializers.ModelSerializer):
         validators = [
             UniqueTogetherValidator(
                 queryset=Car.objects.all(),
-                fields=["maker", "model"],
+                fields=["make", "model"],
             )
         ]
+
+
+class PopularCarSerializer(serializers.ModelSerializer):
+
+    rates_number = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Car
+        fields = (
+            "id",
+            "make",
+            "model",
+            "rates_number",
+        )
+
+    @staticmethod
+    def get_rates_number(obj):
+        return obj.rates.count()
 
 
 class RateCarSerializer(serializers.ModelSerializer):

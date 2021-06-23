@@ -14,23 +14,23 @@ class TestCar:
 
     @staticmethod
     def test_str():
-        car = CarFactory.create(maker="Volkswagen", model="Golf")
+        car = CarFactory.create(make="Volkswagen", model="Golf")
         assert str(car) == "Volkswagen Golf"
 
     @staticmethod
     def test_avg_rating_none():
-        car = CarFactory.create(maker="Volkswagen", model="Golf")
+        car = CarFactory.create(make="Volkswagen", model="Golf")
         assert car.avg_rating is None
 
     @staticmethod
     def test_avg_rating_one():
-        car = CarFactory.create(maker="Volkswagen", model="Golf")
+        car = CarFactory.create(make="Volkswagen", model="Golf")
         RateFactory(car=car, rating=2)
         assert car.avg_rating == 2
 
     @staticmethod
     def test_avg_rating_average():
-        car = CarFactory.create(maker="Volkswagen", model="Golf")
+        car = CarFactory.create(make="Volkswagen", model="Golf")
         RateFactory(car=car, rating=2)
         RateFactory(car=car, rating=2)
         RateFactory(car=car, rating=3)
@@ -46,6 +46,6 @@ class TestRate:
 
     @staticmethod
     def test_str():
-        car = CarFactory.create(maker="Volkswagen", model="Golf")
+        car = CarFactory.create(make="Volkswagen", model="Golf")
         rate = RateFactory.create(car=car, rating=3)
         assert str(rate) == "Volkswagen Golf: 3"

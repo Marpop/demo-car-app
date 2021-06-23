@@ -6,16 +6,16 @@ from model_utils.models import TimeStampedModel
 
 
 class Car(TimeStampedModel):
-    maker = models.CharField(max_length=50)
+    make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(name="unique name", fields=["maker", "model"])
+            models.UniqueConstraint(name="unique name", fields=["make", "model"])
         ]
 
     def __str__(self):
-        return f"{self.maker} {self.model}"
+        return f"{self.make} {self.model}"
 
     @property
     def avg_rating(self):

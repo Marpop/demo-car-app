@@ -1,3 +1,5 @@
+from django.db import models
+
 from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
@@ -6,7 +8,11 @@ from rest_framework.generics import (
 )
 
 from apps.cars.models import Car, Rate
-from apps.cars.serializers import CarSerializer, RateCarSerializer
+from apps.cars.serializers import (
+    CarSerializer,
+    PopularCarSerializer,
+    RateCarSerializer,
+)
 
 
 class CarListView(ListCreateAPIView):
@@ -17,6 +23,14 @@ class CarListView(ListCreateAPIView):
 class CarDestroyView(DestroyAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
+
+
+class PopularCarsListView(ListAPIView):
+    queryset = Car.objects.annotate(rates_number=models.Count("rates")).order_by(
+        "-rates_number"
+    )
+    serializer_class = PopularCarSerializer
+
 
 class RateCarView(CreateAPIView):
     queryset = Rate.objects.all()
