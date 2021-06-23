@@ -5,20 +5,23 @@ from django.urls import include, path
 
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-
+from rest_framework.permissions import AllowAny
 
 schema_view = get_schema_view(
     openapi.Info(title="Cars Ratings", default_version="v1"),
     public=True,
-    permission_classes=[IsAuthenticatedOrReadOnly],
+    permission_classes=[AllowAny],
     validators=["ssv"],
 )
 
-urlpatterns = [
-    path(settings.ADMIN_URL, admin.site.urls),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # type: ignore
+urlpatterns = [path(settings.ADMIN_URL, admin.site.urls),] + static(
+    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+)  # type: ignore
 
 urlpatterns += [
-    path("/", include("apps.cars.urls")),
+    # API Documentation
+    path(
+        "docs/", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger"
+    ),
+    path("", include("apps.cars.urls")),
 ]
