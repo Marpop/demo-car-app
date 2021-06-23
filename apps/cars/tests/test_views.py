@@ -114,8 +114,6 @@ class TestRateCarView:
             },
             format="json",
         )
-        print(response)
-        print(response.json())
         assert response.status_code == status.HTTP_201_CREATED
         assert response.json() == {
             "car_id": 2,

@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
+from tqdm import tqdm
 
 from apps.cars.models import Car, Rate
+from apps.cars.services import get_models_for_make
 
 
 class CarSerializer(serializers.ModelSerializer):
@@ -23,6 +25,20 @@ class CarSerializer(serializers.ModelSerializer):
                 fields=["make", "model"],
             )
         ]
+
+    def validate(self, data):
+        make = data["make"].capitalize()
+        model = data["model"].capitalize()
+        results = get_models_for_make(make)
+        if len(results) == 0:
+            raise serializers.ValidationError({"make": f"Make '{make}' does't exist."})
+        for result in tqdm(results):
+            if result["Model_Name"].lower() == make.lower():
+                break
+            raise serializers.ValidationError(
+                {"model": f"Model '{model}' does't exist."}
+            )
+        return {"make": make, "model": model}
 
 
 class PopularCarSerializer(serializers.ModelSerializer):

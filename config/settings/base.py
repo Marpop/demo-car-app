@@ -242,3 +242,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": ("rest_framework.parsers.JSONParser",),
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.URLPathVersioning",
 }
+
+# Vehicle API
+VEHICLE_API_URL = "https://vpic.nhtsa.dot.gov/api/vehicles/"
+VEHIDLE_GET_ALL_MAKES = VEHICLE_API_URL + "GetAllMakes"
+VEHICLE_GET_MODELS_BY_MAKE = VEHICLE_API_URL + "GetModelsForMake/"
