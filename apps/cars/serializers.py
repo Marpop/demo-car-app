@@ -8,7 +8,7 @@ from apps.cars.services import get_models_for_make
 
 class CarSerializer(serializers.ModelSerializer):
 
-    avg_rating = serializers.Field(required=False)
+    avg_rating = serializers.ReadOnlyField()
 
     class Meta:
         model = Car
