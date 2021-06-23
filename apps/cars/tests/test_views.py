@@ -62,6 +62,7 @@ class TestCarDestroyView:
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert Car.objects.all().count() == 3
 
+
 class TestPopularCarsListView:
     @staticmethod
     def setup():
@@ -81,7 +82,22 @@ class TestPopularCarsListView:
     def test_list(api_client):
         response = api_client.get(reverse("popular"))
         assert response.status_code == status.HTTP_200_OK
-        assert response.json() == [{"id":ANY,"make": "Mercedes","model":ANY,"rates_number":5,},{"id": ANY,"make": "BMW","model": ANY,"rates_number": 3,},{"id": ANY,"make": "Volkswagen","model": ANY,"rates_number":0}]
+        assert response.json() == [
+            {
+                "id": ANY,
+                "make": "Mercedes",
+                "model": ANY,
+                "rates_number": 5,
+            },
+            {
+                "id": ANY,
+                "make": "BMW",
+                "model": ANY,
+                "rates_number": 3,
+            },
+            {"id": ANY, "make": "Volkswagen", "model": ANY, "rates_number": 0},
+        ]
+
 
 class TestRateCarView:
     @staticmethod
