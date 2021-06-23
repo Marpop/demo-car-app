@@ -1,5 +1,6 @@
 import factory
-from content.models import Car, Rate
+
+from apps.cars.models import Car, Rate
 
 
 class CarFactory(factory.django.DjangoModelFactory):
