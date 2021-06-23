@@ -36,3 +36,8 @@ TEMPLATES[-1]["OPTIONS"]["loaders"] = [  # type: ignore[index] # noqa F405
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+
+REST_FRAMEWORK["TEST_REQUEST_RENDERER_CLASSES"] = [  # noqa F405
+    "rest_framework.renderers.JSONRenderer",
+    "rest_framework.renderers.MultiPartRenderer",
+]
