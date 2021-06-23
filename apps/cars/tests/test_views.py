@@ -12,21 +12,19 @@ pytestmark = pytest.mark.django_db
 
 
 class TestCarListView:
-    @staticmethod
-    def setup():
+    def setup(self):
         CarFactory.create_batch(4)
         CarFactory.create(make="Volkswagen", model="Passat")
+        self.endpoint = reverse("cars")
 
-    @staticmethod
-    def test_list(api_client):
-        response = api_client.get(reverse("cars"))
+    def test_list(self, api_client):
+        response = api_client.get(self.endpoint)
         assert response.status_code == status.HTTP_200_OK
         assert len(response.data) == 5
 
-    @staticmethod
-    def test_create_ok(api_client):
+    def test_create_ok(self, api_client):
         response = api_client.post(
-            reverse("cars"),
+            self.endpoint,
             data={"make": "Volkswagen", "model": "Golf"},
             format="json",
         )
@@ -39,10 +37,9 @@ class TestCarListView:
         }
         assert Car.objects.all().count() == 6
 
-    @staticmethod
-    def test_create_exists(api_client):
+    def test_create_exists(self, api_client):
         response = api_client.post(
-            reverse("cars"),
+            self.endpoint,
             data={"make": "Volkswagen", "model": "Passat"},
             format="json",
         )
@@ -51,21 +48,20 @@ class TestCarListView:
 
 
 class TestCarDestroyView:
-    @staticmethod
-    def setup():
+    def setup(self):
         CarFactory.create_batch(4)
-
-    @staticmethod
-    def test_delete(api_client):
         car = Car.objects.first()
-        response = api_client.delete(reverse("cars_detail", kwargs={"pk": car.id}))
+        self.endpoint = reverse("cars_detail", kwargs={"pk": car.id})
+
+    def test_delete(self, api_client):
+        response = api_client.delete(self.endpoint)
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert Car.objects.all().count() == 3
 
 
 class TestPopularCarsListView:
-    @staticmethod
-    def setup():
+    def setup(self):
+        self.endpoint = reverse("popular")
         car_1 = CarFactory.create(make="BMW")
         car_2 = CarFactory.create(make="Mercedes")
         CarFactory.create(make="Volkswagen")
@@ -78,9 +74,8 @@ class TestPopularCarsListView:
         RateFactory(car=car_2)
         RateFactory(car=car_2)
 
-    @staticmethod
-    def test_list(api_client):
-        response = api_client.get(reverse("popular"))
+    def test_list(self, api_client):
+        response = api_client.get(self.endpoint)
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == [
             {
@@ -100,14 +95,14 @@ class TestPopularCarsListView:
 
 
 class TestRateCarView:
-    @staticmethod
-    def setup():
-        CarFactory.create(id=2)
+    def setup(self):
+        self.endpoint = reverse("rate")
 
-    @staticmethod
-    def test_create_ok(api_client):
+    def test_create_ok(self, api_client):
+        car = CarFactory.create(id=2)
+        car.refresh_from_db()
         response = api_client.post(
-            reverse("rate"),
+            self.endpoint,
             data={
                 "car_id": 2,
                 "rating": 3,
@@ -120,12 +115,11 @@ class TestRateCarView:
             "rating": 3,
         }
 
-    @staticmethod
-    def test_create_no_car(api_client):
+    def test_create_no_car(self, api_client):
         response = api_client.post(
-            reverse("rate"),
+            self.endpoint,
             data={
-                "car_id": 999,
+                "car_id": 1,
                 "rating": 3,
             },
             format="json",

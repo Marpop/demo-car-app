@@ -14,10 +14,9 @@ def _call_api(endpoint):
             logger.error(response.text)
             return None
         return response.json().get("Results")
-    except requests.exception.RequestException as error:
+    except requests.exceptions.RequestException as error:
         logger.exception(error)
         raise SystemExit(error)
-
 
 
 def get_all_makes():
@@ -25,6 +24,6 @@ def get_all_makes():
     return _call_api(endpoint)
 
 
-def get_models_for_make(make: str):
+def get_models_for_make(make):
     endpoit = settings.VEHICLE_GET_MODELS_BY_MAKE
     return _call_api(f"{endpoit}/{make}")
