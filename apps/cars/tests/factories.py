@@ -12,7 +12,7 @@ class CarFactory(factory.django.DjangoModelFactory):
 
 
 class RateFactory(factory.django.DjangoModelFactory):
-    rate = factory.Faker("pyint", min_value=1, max_value=5)
+    rating = factory.Faker("pyint", min_value=1, max_value=5)
     car = factory.SubFactory(CarFactory)
 
     class Meta:

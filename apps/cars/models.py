@@ -21,14 +21,14 @@ class Car(TimeStampedModel):
     def avg_rating(self):
         if not self.rates.exists():
             return None
-        return round(self.rates.all().aggregate(Avg("rate")).get("rate__avg"), 2)
+        return round(self.rates.all().aggregate(Avg("rating")).get("rating__avg"), 1)
 
 
 class Rate(TimeStampedModel):
     car = models.ForeignKey(Car, related_name="rates", on_delete=models.CASCADE)
-    rate = models.PositiveSmallIntegerField(
+    rating = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
 
     def __str__(self):
-        return f"{self.car}: {self.rate}"
+        return f"{self.car}: {self.rating}"
