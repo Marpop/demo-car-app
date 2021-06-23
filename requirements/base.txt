@@ -24,3 +24,6 @@ requests==2.25.1  # https://github.com/kennethreitz/requests
 
 # Progress bar
 tqdm==4.61.1  # https://github.com/tqdm/tqdm
+
+# Errors reporting
+sentry-sdk==1.1.0  # https://github.com/getsentry/sentry-python

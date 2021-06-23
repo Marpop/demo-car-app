@@ -24,4 +24,3 @@ class TestCarDestroylView(TestCarListView):
         car = Car.objects.first()
         response = api_client.post(reverse("cars-detail", args=[car.id]))
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 4
