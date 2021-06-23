@@ -46,6 +46,35 @@ class TestCarListView:
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert Car.objects.all().count() == 5
 
+    def test_wrong_make(self, api_client):
+        response = api_client.post(
+            self.endpoint,
+            data={"make": "A", "model": "Golf"},
+            format="json",
+        )
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json() == {"make": ["Make 'A' does't exist."]}
+
+    def test_wrong_model(self, api_client):
+        response = api_client.post(
+            self.endpoint,
+            data={"make": "Volkswagen", "model": "B"},
+            format="json",
+        )
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json() == {"model": ["Model 'B' does't exist."]}
+
+    def test_wrong_make_and_model(self, api_client):
+        response = api_client.post(
+            self.endpoint,
+            data={"make": "A", "model": "B"},
+            format="json",
+        )
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert response.json() == {
+            "make": ["Make 'A' does't exist."],
+        }
+
 
 class TestCarDestroyView:
     def setup(self):

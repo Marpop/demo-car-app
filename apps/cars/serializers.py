@@ -25,20 +25,26 @@ class CarSerializer(serializers.ModelSerializer):
             )
         ]
 
-    def validate(self, data):
-        make = data["make"].capitalize()
-        model = data["model"].capitalize()
+    def validate(self, attrs):
+        make = attrs["make"].capitalize()
+        model = attrs["model"].capitalize()
         results = get_models_for_make(make)
         if len(results) == 0:
             raise serializers.ValidationError({"make": f"Make '{make}' does't exist."})
         make_found = False
+        model_found = False
         for result in results:
             if result["Model_Name"].lower() == model.lower():
+                model_found = True
+            if result["Make_Name"].lower() == make.lower():
                 make_found = True
+        errors = {}
         if not make_found:
-            raise serializers.ValidationError(
-                {"model": f"Model '{model}' does't exist."}
-            )
+            errors["make"] = f"Make '{make}' does't exist."
+            raise serializers.ValidationError(errors)
+        if not model_found:
+            errors["model"] = f"Model '{model}' does't exist."
+            raise serializers.ValidationError(errors)
         return {"make": make, "model": model}
 
 
