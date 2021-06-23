@@ -13,3 +13,7 @@
 * Fill envs in ```.envs.production``` dir 
 * Type ```export COMPOSE_FILE=production.yml```
 * Same as in development
+
+# Heroku demo
+
+https://demo-car-app.herokuapp.com/docs/
