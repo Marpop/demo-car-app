@@ -12,7 +12,8 @@ pytestmark = pytest.mark.django_db
 
 
 class TestCarListView:
-    def setup(self):
+    @staticmethod
+    def setup():
         CarFactory.create_batch(4)
         CarFactory.create(maker="Volkswagen", model="Passat")
 
@@ -50,7 +51,8 @@ class TestCarListView:
 
 
 class TestCarDestroyView:
-    def setup(self):
+    @staticmethod
+    def setup():
         CarFactory.create_batch(4)
 
     @staticmethod

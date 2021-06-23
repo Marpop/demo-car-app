@@ -19,7 +19,9 @@ class Car(TimeStampedModel):
 
     @property
     def avg_rating(self):
-        return self.rates.all().aggregate(Avg("rate")).get("rate__avg")
+        if not self.rates.exists():
+            return None
+        return round(self.rates.all().aggregate(Avg("rate")).get("rate__avg"), 2)
 
 
 class Rate(TimeStampedModel):

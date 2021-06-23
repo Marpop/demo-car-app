@@ -135,7 +135,7 @@ integrations = [
     sentry_logging,
     DjangoIntegration(),
 ]
-sentry_sdk.init(
+sentry_sdk.init(  # pylint: disable=abstract-class-instantiated
     dsn=SENTRY_DSN,
     integrations=integrations,
     environment=env("SENTRY_ENVIRONMENT", default="production"),
